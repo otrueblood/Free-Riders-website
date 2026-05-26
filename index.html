@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Free Riders</title>
+  <meta name="description" content="The Free Riders — live rock and country done right." />
+  <style>
+    :root {
+      --cream: #fcf9f1;
+      --cream-2: #f8f2e5;
+      --paper: #fffdf8;
+      --ink: #2a2118;
+      --muted: #6f5f4f;
+      --line: rgba(42, 33, 24, 0.12);
+      --accent: #9b6b43;
+      --shadow: 0 24px 60px rgba(44, 31, 18, 0.09);
+      --radius: 28px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(155,107,67,.08), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(42,33,24,.05), transparent 28%),
+        linear-gradient(180deg, var(--cream) 0%, var(--paper) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      mix-blend-mode: multiply;
+      background-image:
+        linear-gradient(rgba(0,0,0,.7) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,.7) 1px, transparent 1px);
+      background-size: 3px 3px;
+      z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, video { display: block; max-width: 100%; }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+      gap: 16px;
+    }
+
+    .brandmark {
+      gap: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .brandmark .logo {
+      width: 62px;
+      height: 62px;
+      object-fit: contain;
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(44,31,18,.08);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav a {
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s ease, color .2s ease;
+    }
+    .nav a:hover { color: var(--ink); border-color: var(--ink); }
+
+    .hero {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(20,16,12,.10), rgba(20,16,12,.22)),
+        url('images/free-riders-hero-bw.png') center/cover no-repeat;
+      min-height: min(84vh, 860px);
+      box-shadow: var(--shadow);
+      display: grid;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(12,8,5,.12) 0%, rgba(12,8,5,.42) 70%, rgba(12,8,5,.68) 100%),
+        radial-gradient(circle at center, transparent 15%, rgba(12,8,5,.12) 100%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      padding: clamp(28px, 5vw, 54px);
+      color: #fff8ec;
+      max-width: 760px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.76rem;
+      color: rgba(255,248,236,.84);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 1px;
+      background: rgba(255,248,236,.6);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(3rem, 8vw, 6.75rem);
+      line-height: .92;
+      letter-spacing: 0.02em;
+      text-wrap: balance;
+      font-weight: 700;
+      text-shadow: 0 10px 28px rgba(0,0,0,.22);
+    }
+
+    .subhead {
+      margin: 18px 0 0;
+      max-width: 48rem;
+      font-size: clamp(1.05rem, 2.1vw, 1.28rem);
+      line-height: 1.72;
+      color: rgba(255,248,236,.92);
+      text-wrap: pretty;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,248,236,.3);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      backdrop-filter: blur(8px);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary {
+      background: rgba(255,248,236,.92);
+      color: var(--ink);
+      border-color: rgba(255,248,236,.92);
+    }
+    .btn.secondary {
+      background: rgba(255,248,236,.12);
+      color: #fff8ec;
+    }
+
+    .section { padding: 26px 0 0; }
+
+    .panel {
+      background: rgba(255,252,246,.82);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 0;
+    }
+
+    .card {
+      padding: clamp(24px, 4vw, 40px);
+      border-right: 1px solid var(--line);
+    }
+    .card:last-child { border-right: 0; }
+
+    .kicker {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 12px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      line-height: 1.04;
+      text-wrap: balance;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.8;
+    }
+
+    .mini-label {
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .booking-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--accent);
+      background: rgba(155, 107, 67, 0.07);
+      border-radius: 18px;
+      color: var(--muted);
+    }
+
+    .contact-inline {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.96rem;
+    }
+
+    .contact-inline a {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      width: fit-content;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.5);
+    }
+
+    .form-wrap {
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    form.booking-form {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.72);
+      padding: 13px 14px;
+      font: inherit;
+      color: var(--ink);
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+    }
+
+    input::placeholder, textarea::placeholder { color: rgba(111,95,79,.55); }
+    input:focus, select:focus, textarea:focus { border-color: rgba(155,107,67,.55); box-shadow: 0 0 0 4px rgba(155,107,67,.10); }
+    textarea { min-height: 124px; resize: vertical; }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .form-actions .btn {
+      border-color: rgba(42,33,24,.18);
+      color: var(--ink);
+      background: rgba(255,255,255,.75);
+    }
+
+    .photo-collage {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .collage-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(40,28,18,.03), rgba(40,28,18,.18)), #d9c6a5;
+      box-shadow: 0 16px 30px rgba(44,31,18,.09);
+      min-height: 220px;
+    }
+
+    .collage-item img,
+    .collage-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .collage-item .placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      text-align: center;
+      color: rgba(42,33,24,.72);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.84rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.5;
+      background: linear-gradient(180deg, rgba(252,249,241,.14), rgba(252,249,241,.56));
+    }
+
+    .collage-item .badge {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      z-index: 2;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,253,248,.82);
+      border: 1px solid var(--line);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      backdrop-filter: blur(8px);
+    }
+
+    .c1 { grid-column: span 5; aspect-ratio: 1 / 1.18; }
+    .c2 { grid-column: span 4; aspect-ratio: 1 / 1; }
+    .c3 { grid-column: span 3; aspect-ratio: 1 / 1.25; }
+    .c4 { grid-column: span 4; aspect-ratio: 1.15 / 1; }
+    .c5 { grid-column: span 4; aspect-ratio: 1 / 1.18; }
+    .c6 { grid-column: span 4; aspect-ratio: 1 / .84; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .contact-box {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.42);
+      padding: 18px;
+    }
+
+    .contact-label {
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .contact-value {
+      font-size: 1.04rem;
+      line-height: 1.5;
+      color: var(--ink);
+      word-break: break-word;
+    }
+
+    .footer {
+      padding: 24px 0 36px;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .c1, .c2, .c3, .c4, .c5, .c6 { grid-column: span 6; }
+    }
+
+    @media (max-width: 880px) {
+      .content-grid,
+      .contact-grid,
+      .field-row,
+      .photo-collage {
+        grid-template-columns: 1fr;
+      }
+      .card { border-right: 0; border-bottom: 1px solid var(--line); }
+      .card:last-child { border-bottom: 0; }
+      .hero { min-height: 76vh; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .nav { gap: 10px 14px; }
+      .c1, .c2, .c3, .c4, .c5, .c6 { grid-column: span 1; }
+    }
+
+    @media (max-width: 560px) {
+      .wrap { width: min(calc(100% - 22px), var(--max)); }
+      h1 { font-size: clamp(2.6rem, 15vw, 4.2rem); }
+      .subhead { font-size: 1rem; }
+      .btn { width: 100%; }
+      .hero-actions { flex-direction: column; }
+      .collage-item { min-height: 190px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brandmark">
+        <img class="logo" src="images/free-riders-logo.png" alt="The Free Riders logo" />
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#live">Live</a>
+        <a href="#photos">Photos &amp; Videos</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Hero">
+        <div class="hero-inner">
+          <div class="eyebrow">Est. Bloomington 2025</div>
+          <h1>The Free Riders</h1>
+          <p class="subhead">live rock and country done right</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#live">Booking &amp; inquiries</a>
+            <a class="btn secondary" href="#photos">Photos and videos</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section panel" id="about">
+        <div class="content-grid">
+          <article class="card">
+            <p class="kicker">About</p>
+            <h2>Saddle Up, Let's Ride</h2>
+            <p>
+              The Free Riders blend live rock energy, classic Americana music, and a little country flair into an unforgettable live music experience. From performing at known venues, private events, and DIY house shows, the band has the experience to fit in perfectly with each client's needs.
+            </p>
+          </article>
+          
+        </div>
+      </section>
+
+      <section class="section panel" id="live">
+        <div class="content-grid">
+          <article class="card">
+            <p class="kicker">Live</p>
+            <h2>Currently booking.</h2>
+            <p>
+              The Free Riders are currently booking, please fill out the following, or shoot us a message through our email or instagram.
+            </p>
+
+            <div class="contact-inline">
+              <a href="mailto:freeridersbandin@gmail.com">freeridersbandin@gmail.com</a>
+              <a href="https://instagram.com/thefreeridersband" target="_blank" rel="noopener noreferrer">@thefreeridersband</a>
+            </div>
+
+            <div class="form-wrap">
+              <div class="mini-label">Booking form</div>
+              <form class="booking-form" action="#" method="post">
+                <div class="field-row">
+                  <div class="field">
+                    <label for="name">Name</label>
+                    <input id="name" name="name" type="text" placeholder="Your name" />
+                  </div>
+                  <div class="field">
+                    <label for="date">Date(s) desired</label>
+                    <input id="date" name="date" type="text" placeholder="Tell us your date or range" />
+                  </div>
+                </div>
+
+                <div class="field-row">
+                  <div class="field">
+                    <label for="type">Type</label>
+                    <select id="type" name="type">
+                      <option>Full band</option>
+                      <option>Acoustic</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="sound">Sound provided or self-ran?</label>
+                    <select id="sound" name="sound">
+                      <option>Sound provided</option>
+                      <option>Self-ran</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="field-row">
+                  <div class="field">
+                    <label for="email">Contact info - email (optional)</label>
+                    <input id="email" name="email" type="email" placeholder="Email address" />
+                  </div>
+                  <div class="field">
+                    <label for="phone">Contact info - phone number (optional)</label>
+                    <input id="phone" name="phone" type="tel" placeholder="Phone number" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="message">Additional details</label>
+                  <textarea id="message" name="message" placeholder="Anything else we should know?"></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn primary" type="submit">Send inquiry</button>
+                  <a class="btn" href="mailto:freeridersbandin@gmail.com">Email instead</a>
+                </div>
+              </form>
+            </div>
+          </article>
+          <aside class="card">
+            <p class="kicker">Booking note</p>
+            <h2 style="font-size:clamp(1.4rem, 2.4vw, 1.8rem);">We are actively looking to book dates.</h2>
+            <div class="booking-note">
+              The open road calls! We can travel anywhere in or outside of Indiana, so reach out no matter where you are. Let's ride.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section panel" id="photos">
+        <div class="content-grid">
+          <article class="card">
+            <p class="kicker">Photos &amp; videos</p>
+
+            <div class="photo-collage">
+              <div class="collage-item c1">
+                <span class="badge">Photo</span>
+                <img src="images/photo-1.jpg" alt="The Free Riders photo 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" />
+                <div class="placeholder">Replace with<br>Photo 1</div>
+              </div>
+
+              <div class="collage-item c2">
+                <span class="badge">Video</span>
+                <video controls preload="metadata" poster="images/video-poster-1.jpg">
+                  <source src="videos/video-1.mp4" type="video/mp4" />
+                </video>
+                <div class="placeholder">Replace with<br>Video 1</div>
+              </div>
+
+              <div class="collage-item c3">
+                <span class="badge">Photo</span>
+                <img src="images/photo-2.jpg" alt="The Free Riders photo 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" />
+                <div class="placeholder">Replace with<br>Photo 2</div>
+              </div>
+
+              <div class="collage-item c4">
+                <span class="badge">Video</span>
+                <video controls preload="metadata" poster="images/video-poster-2.jpg">
+                  <source src="videos/video-2.mp4" type="video/mp4" />
+                </video>
+                <div class="placeholder">Replace with<br>Video 2</div>
+              </div>
+
+              <div class="collage-item c5">
+                <span class="badge">Photo</span>
+                <img src="images/photo-3.jpg" alt="The Free Riders photo 3" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" />
+                <div class="placeholder">Replace with<br>Photo 3</div>
+              </div>
+
+              <div class="collage-item c6">
+                <span class="badge">Photo</span>
+                <img src="images/free-riders-live.JPG" alt="The Free Riders live performance" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" />
+                <div class="placeholder">Replace with<br>Photo 4</div>
+              </div>
+            </div>
+          </article>
+          <aside class="card">
+            <p class="kicker">Future additions</p>
+            <h2 style="font-size:clamp(1.4rem, 2.4vw, 1.8rem);">You can add streaming or merch later without rebuilding the site.</h2>
+            <p>
+              For now, this keeps the emphasis on presentation, booking, and a strong first impression.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section panel" id="contact">
+        <div class="content-grid">
+          <article class="card">
+            <p class="kicker">Contact</p>
+            <h2>Reach us directly.</h2>
+            <p>
+              Use the band email or Instagram for inquiries.
+            </p>
+          </article>
+          <aside class="card">
+            <div class="contact-grid">
+              <div class="contact-box">
+                <div class="contact-label">Email</div>
+                <div class="contact-value">freeridersbandin@gmail.com</div>
+              </div>
+              <div class="contact-box">
+                <div class="contact-label">Instagram</div>
+                <div class="contact-value">@thefreeridersband</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div class="footer">
+      <img src="images/free-riders-logo.png" alt="The Free Riders logo" style="width:72px;height:72px;object-fit:contain;margin:0 auto 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.7);padding:4px;box-shadow:0 10px 24px rgba(44,31,18,.08);" />
+      © <span id="year"></span> The Free Riders
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>"}]}
